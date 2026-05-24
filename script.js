@@ -219,4 +219,14 @@
         });
     });
 
+    // ===== BFCache WebGL Fix =====
+    // When navigating back, iOS/Safari/Chrome sometimes restore the page from memory.
+    // This breaks WebGL contexts (making the background freeze).
+    // If the page is restored from cache, force a fresh reload.
+    window.addEventListener('pageshow', (event) => {
+        if (event.persisted) {
+            window.location.reload();
+        }
+    });
+
 })();
