@@ -1,4 +1,3 @@
-import { animate, scrambleText } from 'animejs';
 
 /* ============================================
    Portfolio JavaScript — Interactions & Canvas
@@ -94,18 +93,8 @@ import { animate, scrambleText } from 'animejs';
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
-                    
-                    // Apply subtle, techy binary scramble effect to short tags instead of large paragraphs
-                    const scrambleTags = entry.target.querySelectorAll('.section-tag, .project-number');
-                    
-                    if (entry.target.matches('.section-tag, .project-number')) {
-                        animate(entry.target, { innerHTML: scrambleText({ duration: 800, characters: '01!/<>_' }) });
-                    }
-                    
-                    scrambleTags.forEach(target => {
-                        animate(target, { innerHTML: scrambleText({ duration: 800, characters: '01!/<>_' }) });
-                    });
-
+                    // Apply subtle reveal
+                    entry.target.classList.add('visible');
                     revealObserver.unobserve(entry.target);
                 }
             });
@@ -215,27 +204,6 @@ import { animate, scrambleText } from 'animejs';
         });
     }
 
-    // ===== Button Hover Animations (Anime.js) =====
-    const actionButtons = document.querySelectorAll('.btn');
-    actionButtons.forEach(btn => {
-        const icon = btn.querySelector('svg');
-        
-        btn.addEventListener('mouseenter', () => {
-            // Scale the button down slightly and move the arrow to the right
-            animate(btn, { scale: 0.95, duration: 400, ease: 'outExpo' });
-            if (icon) {
-                animate(icon, { x: '5px', duration: 400, ease: 'outExpo' });
-            }
-        });
-
-        btn.addEventListener('mouseleave', () => {
-            // Revert back to original state
-            animate(btn, { scale: 1, duration: 400, ease: 'outExpo' });
-            if (icon) {
-                animate(icon, { x: 0, duration: 400, ease: 'outExpo' });
-            }
-        });
-    });
 
     // ===== Smooth Scroll for anchor links =====
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
