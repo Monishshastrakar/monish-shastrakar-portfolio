@@ -1,0 +1,32 @@
+{
+  "name": "resume-website",
+  "version": "1.0.0",
+  "description": "",
+  "main": "script.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "repository": {
+    "type": "git",
+    "url": "git+https://github.com/Monishshastrakar/monish-shastrakar-portfolio.git"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "type": "commonjs",
+  "bugs": {
+    "url": "https://github.com/Monishshastrakar/monish-shastrakar-portfolio/issues"
+  },
+  "homepage": "https://github.com/Monishshastrakar/monish-shastrakar-portfolio#readme",
+  "dependencies": {
+    "animejs": "^4.4.1",
+    "react": "^19.2.6",
+    "react-dom": "^19.2.6",
+    "shaders": "^2.5.128",
+    "three": "^0.184.0"
+  },
+  "devDependencies": {
+    "@vitejs/plugin-react": "^6.0.2",
+    "vite": "^8.0.14"
+  }
+}

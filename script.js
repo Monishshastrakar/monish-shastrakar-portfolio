@@ -1,3 +1,5 @@
+import { animate, scrambleText } from 'animejs';
+
 /* ============================================
    Portfolio JavaScript — Interactions & Canvas
    Fluid Aurora Gradient + Glassmorphism UI
@@ -92,6 +94,18 @@
             entries.forEach(entry => {
                 if (entry.isIntersecting) {
                     entry.target.classList.add('visible');
+                    
+                    // Apply subtle, techy binary scramble effect to short tags instead of large paragraphs
+                    const scrambleTags = entry.target.querySelectorAll('.section-tag, .project-number');
+                    
+                    if (entry.target.matches('.section-tag, .project-number')) {
+                        animate(entry.target, { innerHTML: scrambleText({ duration: 800, characters: '01!/<>_' }) });
+                    }
+                    
+                    scrambleTags.forEach(target => {
+                        animate(target, { innerHTML: scrambleText({ duration: 800, characters: '01!/<>_' }) });
+                    });
+
                     revealObserver.unobserve(entry.target);
                 }
             });
@@ -168,115 +182,60 @@
         }, 3000);
     });
 
-    // ===== Mouse-Tracking Spotlight Canvas =====
-    // Radial gradient orb: Cobalt Blue → Deep Violet → white/lavender core.
-    // Smoothly follows cursor with lerp easing.
-    const canvas = document.getElementById('spotlightCanvas');
-    const ctx = canvas.getContext('2d');
-    let animationFrame;
-    let w, h;
-
-    // Mouse position (starts at center)
-    let mouseX = window.innerWidth / 2;
-    let mouseY = window.innerHeight / 2;
-    let targetX = mouseX;
-    let targetY = mouseY;
-
-    function resize() {
-        const dpr = Math.min(window.devicePixelRatio || 1, 2);
-        w = window.innerWidth;
-        h = window.innerHeight;
-        canvas.width = w * dpr;
-        canvas.height = h * dpr;
-        canvas.style.width = w + 'px';
-        canvas.style.height = h + 'px';
-        ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-    }
-
-    document.addEventListener('mousemove', (e) => {
-        targetX = e.clientX;
-        targetY = e.clientY;
-    });
-
-    document.addEventListener('touchmove', (e) => {
-        targetX = e.touches[0].clientX;
-        targetY = e.touches[0].clientY;
-    }, { passive: true });
-
-    function animate() {
-        const isDark = htmlEl.getAttribute('data-theme') === 'dark';
-
-        // Smooth lerp
-        mouseX += (targetX - mouseX) * 0.06;
-        mouseY += (targetY - mouseY) * 0.06;
-
-        // Clear + base fill
-        ctx.clearRect(0, 0, w, h);
-        ctx.fillStyle = isDark ? '#0B0D11' : '#F8FAFC';
-        ctx.fillRect(0, 0, w, h);
-
-        const orbRadius = Math.max(w, h) * 0.5;
-
-        if (isDark) {
-            ctx.globalCompositeOperation = 'lighter';
-
-            // Layer 1: Wide Deep Violet base glow
-            const g1 = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, orbRadius);
-            g1.addColorStop(0, 'hsla(270, 80%, 50%, 0.40)');
-            g1.addColorStop(0.35, 'hsla(260, 70%, 40%, 0.20)');
-            g1.addColorStop(0.7, 'hsla(250, 50%, 25%, 0.08)');
-            g1.addColorStop(1, 'hsla(0, 0%, 0%, 0)');
-            ctx.fillStyle = g1;
-            ctx.fillRect(0, 0, w, h);
-
-            // Layer 2: Neon Cobalt Blue mid-ring
-            const g2 = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, orbRadius * 0.6);
-            g2.addColorStop(0, 'hsla(220, 90%, 60%, 0.35)');
-            g2.addColorStop(0.4, 'hsla(220, 80%, 45%, 0.15)');
-            g2.addColorStop(0.8, 'hsla(210, 60%, 30%, 0.05)');
-            g2.addColorStop(1, 'hsla(0, 0%, 0%, 0)');
-            ctx.fillStyle = g2;
-            ctx.fillRect(0, 0, w, h);
-
-            // Layer 3: Electric Cyan core
-            const g3 = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, orbRadius * 0.25);
-            g3.addColorStop(0, 'hsla(189, 100%, 70%, 0.50)');
-            g3.addColorStop(0.3, 'hsla(189, 90%, 60%, 0.25)');
-            g3.addColorStop(0.7, 'hsla(189, 70%, 40%, 0.05)');
-            g3.addColorStop(1, 'hsla(0, 0%, 0%, 0)');
-            ctx.fillStyle = g3;
-            ctx.fillRect(0, 0, w, h);
-
-            ctx.globalCompositeOperation = 'source-over';
-        } else {
-            // Light mode: more vivid bright pastel wash to contrast against white
-            const g1 = ctx.createRadialGradient(mouseX, mouseY, 0, mouseX, mouseY, orbRadius * 0.6);
-            g1.addColorStop(0, 'hsla(189, 90%, 75%, 0.75)');    // Bright cyan core
-            g1.addColorStop(0.4, 'hsla(210, 80%, 85%, 0.45)');  // Soft blue mid
-            g1.addColorStop(0.8, 'hsla(240, 70%, 92%, 0.15)');  // Faint violet edge
-            g1.addColorStop(1, 'hsla(0, 0%, 100%, 0)');
-            ctx.fillStyle = g1;
-            ctx.fillRect(0, 0, w, h);
+    // ===== Custom Video Background Fade Loop =====
+    const bgVideo = document.getElementById('bgVideo');
+    if (bgVideo) {
+        bgVideo.play().catch(e => console.log("Auto-play prevented", e));
+        
+        function checkVideoFade() {
+            if (!bgVideo.paused && !bgVideo.ended && bgVideo.duration > 0) {
+                const timeLeft = bgVideo.duration - bgVideo.currentTime;
+                
+                // Fade out 0.5s before end
+                if (timeLeft <= 0.5) {
+                    bgVideo.style.opacity = '0';
+                } 
+                // Fade in at the start
+                else if (bgVideo.currentTime > 0) {
+                    bgVideo.style.opacity = '1';
+                }
+            }
+            requestAnimationFrame(checkVideoFade);
         }
+        
+        requestAnimationFrame(checkVideoFade);
 
-        animationFrame = requestAnimationFrame(animate);
+        // Custom loop: wait 100ms, then replay
+        bgVideo.addEventListener('ended', () => {
+            bgVideo.style.opacity = '0';
+            setTimeout(() => {
+                bgVideo.currentTime = 0;
+                bgVideo.play().catch(e => console.log("Replay prevented", e));
+            }, 100);
+        });
     }
 
-    function startCanvas() {
-        resize();
-        animate();
-    }
+    // ===== Button Hover Animations (Anime.js) =====
+    const actionButtons = document.querySelectorAll('.btn');
+    actionButtons.forEach(btn => {
+        const icon = btn.querySelector('svg');
+        
+        btn.addEventListener('mouseenter', () => {
+            // Scale the button down slightly and move the arrow to the right
+            animate(btn, { scale: 0.95, duration: 400, ease: 'outExpo' });
+            if (icon) {
+                animate(icon, { x: '5px', duration: 400, ease: 'outExpo' });
+            }
+        });
 
-    let resizeTimer;
-    window.addEventListener('resize', () => {
-        clearTimeout(resizeTimer);
-        resizeTimer = setTimeout(() => {
-            cancelAnimationFrame(animationFrame);
-            startCanvas();
-        }, 150);
+        btn.addEventListener('mouseleave', () => {
+            // Revert back to original state
+            animate(btn, { scale: 1, duration: 400, ease: 'outExpo' });
+            if (icon) {
+                animate(icon, { x: 0, duration: 400, ease: 'outExpo' });
+            }
+        });
     });
-
-    startCanvas();
 
     // ===== Smooth Scroll for anchor links =====
     document.querySelectorAll('a[href^="#"]').forEach(anchor => {
