@@ -586,12 +586,24 @@ img {
 /* Hamburger */
 .nav-hamburger {
     display: none;
-    background: none;
-    border: none;
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    border-radius: var(--radius-pill);
+    width: 42px;
+    height: 42px;
     cursor: pointer;
-    padding: 4px;
+    padding: 0;
     flex-direction: column;
+    justify-content: center;
+    align-items: center;
     gap: 5px;
+    transition: all var(--duration-normal) var(--ease-spring);
+}
+
+.nav-hamburger:hover {
+    border-color: var(--accent);
+    background: var(--accent-soft);
+    box-shadow: 0 0 20px var(--accent-glow);
 }
 
 .nav-hamburger span {
