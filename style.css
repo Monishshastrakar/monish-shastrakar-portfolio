@@ -1656,25 +1656,32 @@ img {
     }
 
     .nav-container {
-        justify-content: center;
-        position: relative;
+        display: grid;
+        grid-template-columns: 42px 1fr 42px;
+        align-items: center;
         min-width: 220px;
+        gap: 16px;
     }
 
     .nav-actions {
-        position: static;
+        display: contents;
     }
 
     .theme-toggle {
-        position: absolute;
-        left: 0;
+        grid-column: 1;
+        position: static;
+    }
+
+    .nav-logo {
+        grid-column: 2;
+        justify-self: center;
     }
 
     .nav-hamburger {
+        grid-column: 3;
         display: flex;
         z-index: 1001;
-        position: absolute;
-        right: 0;
+        position: static;
     }
 
     .hero {
