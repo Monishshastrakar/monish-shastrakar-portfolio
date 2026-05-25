@@ -39,7 +39,7 @@ function Background() {
   const theme = isDark ? dark : light;
 
   return (
-    <div style={{ position: 'fixed', inset: 0, zIndex: 0, pointerEvents: 'none' }}>
+    <div style={{ width: '100%', height: '100%', zIndex: 0, pointerEvents: 'none' }}>
       <Shader>
         <Swirl colorA={theme.swirlA} colorB={theme.swirlB} detail={1.7} />
         <ChromaFlow 
