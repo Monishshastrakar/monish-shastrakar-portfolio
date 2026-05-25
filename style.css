@@ -1643,9 +1643,26 @@ img {
         font-weight: 600;
     }
 
+    .nav-container {
+        justify-content: center;
+        position: relative;
+        min-width: 220px;
+    }
+
+    .nav-actions {
+        position: static;
+    }
+
+    .theme-toggle {
+        position: absolute;
+        left: 0;
+    }
+
     .nav-hamburger {
         display: flex;
         z-index: 1001;
+        position: absolute;
+        right: 0;
     }
 
     .hero {
