@@ -1669,16 +1669,19 @@ img {
 
     .theme-toggle {
         grid-column: 1;
+        grid-row: 1;
         position: static;
     }
 
     .nav-logo {
         grid-column: 2;
+        grid-row: 1;
         justify-self: center;
     }
 
     .nav-hamburger {
         grid-column: 3;
+        grid-row: 1;
         display: flex;
         z-index: 1001;
         position: static;
