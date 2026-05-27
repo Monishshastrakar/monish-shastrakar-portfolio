@@ -1643,6 +1643,8 @@ img {
 
     .nav-links {
         display: none;
+        grid-column: 1 / -1;
+        grid-row: 2;
         flex-direction: column;
         justify-content: center;
         align-items: center;
