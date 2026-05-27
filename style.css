@@ -1635,9 +1635,9 @@ img {
         -webkit-backdrop-filter: blur(40px) saturate(200%);
         display: flex;
         flex-direction: column;
-        justify-content: center;
         align-items: center;
-        gap: var(--space-2xl);
+        justify-content: center;
+        gap: var(--space-lg);
         padding: 0;
         opacity: 0;
         visibility: hidden;
@@ -1664,6 +1664,9 @@ img {
 
     /* Staggered Animations for links */
     .nav-links li {
+        display: flex;
+        width: 100%;
+        justify-content: center;
         opacity: 0;
         transform: translateY(20px);
         transition: opacity 0.4s cubic-bezier(0.16, 1, 0.3, 1), transform 0.4s cubic-bezier(0.16, 1, 0.3, 1);
@@ -1680,14 +1683,18 @@ img {
     .nav-links.open li:nth-child(4) { transition-delay: 0.25s; }
 
     .nav-links a {
-        font-size: 1.4rem;
+        font-size: 1.2rem;
         font-weight: 500;
         letter-spacing: 1px;
         background: var(--glass-bg);
         border: 1px solid var(--glass-border);
-        padding: 16px 40px;
-        border-radius: 100px;
-        width: 200px;
+        padding: 16px 24px;
+        border-radius: var(--radius-md); /* Rectangular */
+        width: 80%;
+        max-width: 300px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         text-align: center;
         transition: all 0.3s cubic-bezier(0.25, 0.46, 0.45, 0.94);
     }
