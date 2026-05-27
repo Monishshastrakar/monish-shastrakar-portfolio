@@ -69,22 +69,33 @@
     // ===== Mobile Navigation =====
     const hamburger = document.getElementById('hamburger');
     const navLinksContainer = document.getElementById('navLinks');
+    const menuBackdrop = document.getElementById('menuBackdrop');
 
-    hamburger.addEventListener('click', () => {
+    function toggleMenu() {
         hamburger.classList.toggle('active');
         navLinksContainer.classList.toggle('open');
         navbar.classList.toggle('menu-open');
+        if (menuBackdrop) menuBackdrop.classList.toggle('active');
         document.body.style.overflow = navLinksContainer.classList.contains('open') ? 'hidden' : '';
-    });
+    }
+
+    function closeMenu() {
+        hamburger.classList.remove('active');
+        navLinksContainer.classList.remove('open');
+        navbar.classList.remove('menu-open');
+        if (menuBackdrop) menuBackdrop.classList.remove('active');
+        document.body.style.overflow = '';
+    }
+
+    hamburger.addEventListener('click', toggleMenu);
+
+    if (menuBackdrop) {
+        menuBackdrop.addEventListener('click', closeMenu);
+    }
 
     // Close mobile nav on link click
     navLinksContainer.querySelectorAll('a').forEach(link => {
-        link.addEventListener('click', () => {
-            hamburger.classList.remove('active');
-            navLinksContainer.classList.remove('open');
-            navbar.classList.remove('menu-open');
-            document.body.style.overflow = '';
-        });
+        link.addEventListener('click', closeMenu);
     });
 
     // ===== Scroll Reveal (Intersection Observer) =====
