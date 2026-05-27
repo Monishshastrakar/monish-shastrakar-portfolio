@@ -1664,6 +1664,8 @@ img {
     }
 
     .navbar.menu-open {
+        width: 90vw !important;
+        max-width: 400px !important;
         border-radius: var(--radius-xl) !important;
         background: var(--glass-bg-strong) !important;
         border-color: var(--glass-border-hover) !important;
