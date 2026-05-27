@@ -588,7 +588,7 @@ img {
     display: none;
     background: var(--glass-bg);
     border: 1px solid var(--glass-border);
-    border-radius: var(--radius-pill);
+    border-radius: var(--radius-md);
     width: 42px;
     height: 42px;
     cursor: pointer;
@@ -1688,8 +1688,8 @@ img {
         letter-spacing: 1px;
         background: var(--glass-bg);
         border: 1px solid var(--glass-border);
-        padding: 16px 24px;
-        border-radius: var(--radius-md); /* Rectangular */
+        padding: 16px 40px;
+        border-radius: 100px; /* Pill shaped */
         width: 80%;
         max-width: 300px;
         display: flex;
