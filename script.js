@@ -73,6 +73,7 @@
     hamburger.addEventListener('click', () => {
         hamburger.classList.toggle('active');
         navLinksContainer.classList.toggle('open');
+        navbar.classList.toggle('menu-open');
         document.body.style.overflow = navLinksContainer.classList.contains('open') ? 'hidden' : '';
     });
 
@@ -81,6 +82,7 @@
         link.addEventListener('click', () => {
             hamburger.classList.remove('active');
             navLinksContainer.classList.remove('open');
+            navbar.classList.remove('menu-open');
             document.body.style.overflow = '';
         });
     });

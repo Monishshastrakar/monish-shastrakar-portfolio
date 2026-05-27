@@ -1626,12 +1626,14 @@ img {
 @media (max-width: 768px) {
     .nav-links {
         position: fixed;
-        top: -50vh;
-        left: 50%;
-        transform: translateX(-50%);
+        top: 0;
+        left: 0;
+        transform: none;
         width: 100vw;
-        height: 200vh;
-        padding-top: 50vh;
+        height: 100vh;
+        height: 100dvh;
+        padding-top: 0;
+        padding-bottom: 12vh;
         background: var(--nav-bg); /* True glass UI */
         backdrop-filter: blur(24px) saturate(180%);
         -webkit-backdrop-filter: blur(24px) saturate(180%);
@@ -1648,6 +1650,14 @@ img {
     .nav-links.open {
         opacity: 1;
         visibility: visible;
+    }
+
+    .navbar.menu-open {
+        backdrop-filter: none !important;
+        -webkit-backdrop-filter: none !important;
+        background: var(--glass-bg-strong) !important;
+        border-color: var(--glass-border-hover) !important;
+        box-shadow: 0 8px 32px rgba(0, 0, 0, 0.4) !important;
     }
 
     /* Staggered Animations for links */
