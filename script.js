@@ -242,4 +242,107 @@
         }
     });
 
+    // ===== Animated Topography (Mobile Menu Background) =====
+    const topoCanvas = document.getElementById('topoCanvas');
+    if (topoCanvas) {
+        const ctx = topoCanvas.getContext('2d');
+
+        let width, height;
+        function resize() {
+            width = window.innerWidth;
+            height = window.innerHeight;
+            topoCanvas.width = width;
+            topoCanvas.height = height;
+        }
+        window.addEventListener('resize', resize);
+        resize();
+
+        // 2D Simplex Noise implementation
+        const F3 = 1.0 / 3.0, G3 = 1.0 / 6.0;
+        const p = new Uint8Array(256);
+        for (let i = 0; i < 256; i++) p[i] = Math.floor(Math.random() * 256);
+        const perm = new Uint8Array(512), permMod12 = new Uint8Array(512);
+        for (let i = 0; i < 512; i++) {
+            perm[i] = p[i & 255];
+            permMod12[i] = (perm[i] % 12);
+        }
+
+        function noise2D(xin, yin) {
+            let n0, n1, n2;
+            const s = (xin + yin) * 0.5 * (Math.sqrt(3.0) - 1.0);
+            const i = Math.floor(xin + s), j = Math.floor(yin + s);
+            const t = (i + j) * (3.0 - Math.sqrt(3.0)) / 6.0;
+            const X0 = i - t, Y0 = j - t;
+            const x0 = xin - X0, y0 = yin - Y0;
+            let i1, j1;
+            if (x0 > y0) { i1 = 1; j1 = 0; } else { i1 = 0; j1 = 1; }
+            const x1 = x0 - i1 + (3.0 - Math.sqrt(3.0)) / 6.0, y1 = y0 - j1 + (3.0 - Math.sqrt(3.0)) / 6.0;
+            const x2 = x0 - 1.0 + 2.0 * (3.0 - Math.sqrt(3.0)) / 6.0, y2 = y0 - 1.0 + 2.0 * (3.0 - Math.sqrt(3.0)) / 6.0;
+            const ii = i & 255, jj = j & 255;
+            const gi0 = permMod12[ii + perm[jj]], gi1 = permMod12[ii + i1 + perm[jj + j1]], gi2 = permMod12[ii + 1 + perm[jj + 1]];
+            const t0 = 0.5 - x0 * x0 - y0 * y0; if (t0 < 0) n0 = 0.0; else { t0 *= t0; n0 = t0 * t0 * (gi0 % 2 === 0 ? 1 : -1) * (x0 + y0); }
+            const t1 = 0.5 - x1 * x1 - y1 * y1; if (t1 < 0) n1 = 0.0; else { t1 *= t1; n1 = t1 * t1 * (gi1 % 2 === 0 ? 1 : -1) * (x1 + y1); }
+            const t2 = 0.5 - x2 * x2 - y2 * y2; if (t2 < 0) n2 = 0.0; else { t2 *= t2; n2 = t2 * t2 * (gi2 % 2 === 0 ? 1 : -1) * (x2 + y2); }
+            return 70.0 * (n0 + n1 + n2);
+        }
+
+        let zOffset = 0;
+        let animationId;
+
+        function draw() {
+            // Check current theme dynamically
+            const isLightMode = document.documentElement.getAttribute('data-theme') === 'light';
+            
+            // Fill background based on theme
+            ctx.fillStyle = isLightMode ? '#F8FAFC' : '#0B0D11'; 
+            ctx.fillRect(0, 0, width, height);
+
+            // Adjust stroke visibility based on theme contrast
+            ctx.strokeStyle = isLightMode ? 'rgba(6, 182, 212, 0.45)' : 'rgba(6, 182, 212, 0.2)'; 
+            ctx.lineWidth = 1.5;
+            
+            const levels = 10; // Fewer lines so it's not overwhelming
+            
+            for (let l = 0; l < levels; l++) {
+                const threshold = (l / levels) * 2 - 1;
+                
+                ctx.beginPath();
+                let isDrawing = false;
+
+                for (let y = 0; y < height; y += 6) {
+                    isDrawing = false;
+                    for (let x = 0; x < width; x += 6) {
+                        // Broader, organic waves that don't repeat symmetrically (less "trippy")
+                        const sx = x * 0.002;
+                        const sy = y * 0.002;
+                        
+                        const noiseVal = (
+                            Math.sin(sx + zOffset) + 
+                            Math.cos(sy + zOffset * 0.7) + 
+                            Math.sin((sx + sy) * 0.8 - zOffset * 0.4)
+                        ) / 3;
+                        
+                        // Slightly wider threshold to catch the smoother slopes
+                        if (Math.abs(noiseVal - threshold) < 0.03) {
+                            if (!isDrawing) {
+                                ctx.moveTo(x, y);
+                                isDrawing = true;
+                            } else {
+                                ctx.lineTo(x, y);
+                            }
+                        } else {
+                            isDrawing = false;
+                        }
+                    }
+                }
+                ctx.stroke();
+            }
+
+            zOffset += 0.002; // Slowed down animation speed
+            requestAnimationFrame(draw);
+        }
+
+        draw();
+    }
+
 })();
